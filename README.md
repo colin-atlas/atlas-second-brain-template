@@ -19,7 +19,7 @@ Learn more about Atlas: https://atlasassistants.com
 1. Clone this repo into the location of your choice (default: `~/brain/`):
 
    ```bash
-   git clone <repo-url> ~/brain
+   git clone https://github.com/colin-atlas/atlas-second-brain-template.git ~/brain
    cd ~/brain
    ```
 
