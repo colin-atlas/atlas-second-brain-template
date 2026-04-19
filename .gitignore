@@ -1,0 +1,13 @@
+# Obsidian workspace files (user-local)
+.obsidian/workspace*
+.obsidian/cache
+.obsidian/appearance.json
+
+# macOS
+.DS_Store
+
+# Obsidian trash
+.trash/
+
+# Temp files
+*.tmp
