@@ -7,10 +7,12 @@ Learn more about Atlas: https://atlasassistants.com
 ## What's Inside
 
 - `CLAUDE.md` — operating manual Claude Code reads on every session. Fill in the executive's details.
-- `context/user.md` — template for the executive's identity, goals, working style, and preferences.
+- `context/` — placeholder pages for the exec and their company: `user.md`, `company.md`, `icp.md`, `brand.md`, `team.md`. Fill these in during intake.
 - `knowledge/_index.md` — scaffold for the knowledge graph. Populated by the `ingest` skill.
 - `projects/project-index.md` — scaffold for active and archived projects.
-- `areas/`, `meetings/`, `reports/`, `inbox/` — empty scaffolded directories.
+- `areas/` — example areas of responsibility: `content/`, `finances/`, `product/`, `strategic-planning/`. Add or rename to match the exec's world.
+- `reports/` — `daily/`, `weekly/`, `monthly/` subfolders for periodic reports (SOD/EOD, weekly, monthly).
+- `meetings/`, `inbox/` — scaffolded directories ready for use.
 - `.claude/skills/ingest/` — skill that turns raw captures into synthesized knowledge pages.
 - `.claude/skills/lint/` — skill that audits and auto-fixes vault health.
 
