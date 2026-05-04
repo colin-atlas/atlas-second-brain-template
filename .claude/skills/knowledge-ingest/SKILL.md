@@ -1,16 +1,20 @@
 ---
-name: ingest
-description: Process raw captures (inbox items, meeting notes, articles) into synthesized knowledge pages. Creates or updates entity, concept, and comparison pages in knowledge/ with full frontmatter, cross-references, and wikilinks.
+name: knowledge-ingest
+description: Process raw captures (inbox items, meeting notes, articles) into synthesized knowledge graph pages. Creates or updates person, company, tool, concept, and comparison pages in `{{VAULT_NAME}}/knowledge/` with full frontmatter, cross-references, and wikilinks. For ingestion into the content graph ({{VAULT_OWNER_SHORT_NAME}}'s takes, stories, voice material), use `/content-ingest` instead.
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
-# Ingest
+> **Filing-rules mandate (from `RESOLVER.md`):** Before creating any new page, read `RESOLVER.md` (at the vault root) and file by primary subject, not by source format. Subject routing: person → `knowledge/people/`, company → `knowledge/companies/`, tool → `knowledge/tools/`, concept → `knowledge/concepts/`, comparison → `knowledge/comparisons/`.
 
-Process a source document into the knowledge base. Creates or updates wiki-style knowledge pages, adds cross-references, and maintains the knowledge index.
+# Knowledge Ingest
+
+Process a source document into the knowledge graph at `{{VAULT_NAME}}/knowledge/`. Creates or updates wiki-style person / company / tool / concept / comparison pages, adds cross-references, and maintains the knowledge index.
+
+For {{VAULT_OWNER_SHORT_NAME}}'s voice material (takes, stories, perspectives from transcripts and voice memos), use `/content-ingest` — that skill writes to `writing-system/content-graph/` instead.
 
 ## Trigger
 
-- **Manual (mode A):** User runs `/ingest <path>` or says "ingest this"
+- **Manual (mode A):** User runs `/knowledge-ingest <path>` or says "knowledge-ingest this"
 - **Agent-driven (mode B):** Agent invokes after capturing raw material. If the source isn't filed yet, write it to `inbox/` with frontmatter first, then ingest from that path.
 
 ## Input
@@ -31,7 +35,7 @@ A file path to a source document (inbox item, meeting note, article, or any mark
 ### Phase 2: Identify Knowledge Targets
 
 For each entity and concept extracted, determine:
-- Does a page already exist? Search `knowledge/entities/`, `knowledge/concepts/`, and `knowledge/comparisons/`
+- Does a page already exist? Search `knowledge/people/`, `knowledge/companies/`, `knowledge/tools/`, `knowledge/concepts/`, and `knowledge/comparisons/`
 - Should a new page be created?
 - Should an existing page be updated?
 - If 2+ entities in the same domain are now covered, should a comparison page be created?
@@ -46,42 +50,122 @@ For each entity and concept extracted, determine:
 
 For each target, create or update the page following these templates:
 
-**Entity page** (`knowledge/entities/<name>.md`):
+**Person page** (`knowledge/people/<kebab-name>.md`):
 
 ```yaml
 ---
-title: <Entity Name>
+title: <Person Name>
 type: knowledge
-subtype: entity
+subtype: person
 tags:
   - <domain-tag>
-  - <specific-tag>
 sources:
   - "[[<path-to-source>]]"
 related:
-  - "[[knowledge/concepts/<related-concept>]]"
+  - link: "[[knowledge/companies/<company>]]"
+    type: works_at
+  - link: "[[knowledge/concepts/<concept>]]"
+    type: applies
 created: <today>
 updated: <today>
 ---
 ```
 
 ```
-# <Entity Name>
+# <Person Name>
 
-<2-3 sentence summary of what this entity is>
+<2-3 sentence summary of who this person is>
+
+## Key Details
+
+<Structured information — role, background, notable work, relationship to {{VAULT_OWNER_ORG_NAME}}>
+
+## Relevance to {{VAULT_OWNER_ORG_NAME}}
+
+<Why this person matters to {{VAULT_OWNER_SHORT_NAME}}/{{VAULT_OWNER_ORG_NAME}} — connection to current projects, strategy, or operations>
+
+## Related
+
+- [[knowledge/companies/<company>]] — <one-line description of relationship>
+- [[knowledge/concepts/<concept>]] — <one-line description of relationship>
+```
+
+**Company page** (`knowledge/companies/<kebab-name>.md`):
+
+```yaml
+---
+title: <Company Name>
+type: knowledge
+subtype: company
+tags:
+  - <domain-tag>
+sources:
+  - "[[<path-to-source>]]"
+related:
+  - link: "[[knowledge/people/<founder>]]"
+    type: founded_by
+created: <today>
+updated: <today>
+---
+```
+
+```
+# <Company Name>
+
+<2-3 sentence summary of what this company is>
+
+## Key Details
+
+<Structured information — what it does, how it works, key offerings, pricing if relevant>
+
+## Relevance to {{VAULT_OWNER_ORG_NAME}}
+
+<Why this matters to {{VAULT_OWNER_SHORT_NAME}}/{{VAULT_OWNER_ORG_NAME}} — connection to current projects, strategy, or operations>
+
+## Related
+
+- [[knowledge/people/<founder>]] — <one-line description of relationship>
+- [[knowledge/tools/<product>]] — <one-line description of relationship>
+```
+
+**Tool page** (`knowledge/tools/<kebab-name>.md`):
+
+```yaml
+---
+title: <Tool Name>
+type: knowledge
+subtype: tool
+tags:
+  - <domain-tag>
+sources:
+  - "[[<path-to-source>]]"
+related:
+  - link: "[[knowledge/companies/<maker>]]"
+    type: built_by
+  - link: "[[knowledge/concepts/<related-concept>]]"
+    type: implements
+created: <today>
+updated: <today>
+---
+```
+
+```
+# <Tool Name>
+
+<2-3 sentence summary of what this tool is>
 
 ## Key Details
 
 <Structured information — what it does, how it works, key features, pricing if relevant>
 
-## Relevance to Atlas
+## Relevance to {{VAULT_OWNER_ORG_NAME}}
 
-<Why this matters to Colin/Atlas — connection to current projects, strategy, or operations>
+<Why this matters to {{VAULT_OWNER_SHORT_NAME}}/{{VAULT_OWNER_ORG_NAME}} — connection to current projects, strategy, or operations>
 
 ## Related
 
+- [[knowledge/companies/<maker>]] — <one-line description of relationship>
 - [[knowledge/concepts/<concept>]] — <one-line description of relationship>
-- [[knowledge/entities/<entity>]] — <one-line description of relationship>
 ```
 
 **Concept page** (`knowledge/concepts/<name>.md`):
@@ -96,7 +180,10 @@ tags:
 sources:
   - "[[<path-to-source>]]"
 related:
-  - "[[knowledge/entities/<related-entity>]]"
+  - link: "[[knowledge/people/<author>]]"
+    type: references
+  - link: "[[knowledge/tools/<example>]]"
+    type: applied_in
 created: <today>
 updated: <today>
 ---
@@ -111,13 +198,14 @@ updated: <today>
 
 <Core mechanics, principles, or framework>
 
-## Application to Atlas
+## Application to {{VAULT_OWNER_ORG_NAME}}
 
-<How this concept applies to Colin's work, Atlas's strategy, or agent operations>
+<How this concept applies to {{VAULT_OWNER_SHORT_NAME}}'s work, {{VAULT_OWNER_ORG_NAME}}'s strategy, or agent operations>
 
 ## Related
 
-- [[knowledge/entities/<entity>]] — <one-line description>
+- [[knowledge/tools/<tool>]] — <one-line description>
+- [[knowledge/people/<person>]] — <one-line description>
 ```
 
 **Comparison page** (`knowledge/comparisons/<name>.md`):
@@ -133,8 +221,10 @@ sources:
   - "[[<path-to-source-1>]]"
   - "[[<path-to-source-2>]]"
 related:
-  - "[[knowledge/entities/<entity-1>]]"
-  - "[[knowledge/entities/<entity-2>]]"
+  - link: "[[knowledge/tools/<entity-1>]]"
+    type: references
+  - link: "[[knowledge/tools/<entity-2>]]"
+    type: references
 created: <today>
 updated: <today>
 ---
@@ -153,12 +243,12 @@ updated: <today>
 
 ## Recommendation
 
-<Which option fits Atlas's needs and why>
+<Which option fits {{VAULT_OWNER_ORG_NAME}}'s needs and why>
 
 ## Related
 
-- [[knowledge/entities/<entity-1>]] — <detail>
-- [[knowledge/entities/<entity-2>]] — <detail>
+- [[knowledge/tools/<entity-1>]] — <detail>
+- [[knowledge/tools/<entity-2>]] — <detail>
 ```
 
 **When updating an existing page:**
@@ -176,7 +266,7 @@ updated: <today>
 
 ### Phase 5: Update the Knowledge Index
 
-Add new entries to `knowledge/_index.md` under the appropriate category (Concepts, Entities, Comparisons). Format:
+Add new entries to `knowledge/_index.md` under the appropriate category (People, Companies, Tools, Concepts, Comparisons). Format:
 
 ```
 - [[<subtype>/<filename>]] — <one-line description>
@@ -200,11 +290,11 @@ Output a summary of all actions taken:
 Ingest complete — <source filename>
 
 Created:
-  knowledge/entities/<name>.md
+  knowledge/tools/<name>.md
   knowledge/concepts/<name>.md
 
 Updated:
-  knowledge/entities/<existing>.md (added <what>)
+  knowledge/people/<existing>.md (added <what>)
 
 Cross-references added:
   <page-1> ←→ <page-2>
