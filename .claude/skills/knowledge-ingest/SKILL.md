@@ -78,11 +78,11 @@ updated: <today>
 
 ## Key Details
 
-<Structured information — role, background, notable work, relationship to {{VAULT_OWNER_ORG_NAME}}>
+<Structured information — role, background, notable work, relationship to {{VAULT_OWNER_COMPANY}}>
 
-## Relevance to {{VAULT_OWNER_ORG_NAME}}
+## Relevance to {{VAULT_OWNER_COMPANY}}
 
-<Why this person matters to {{VAULT_OWNER_SHORT_NAME}}/{{VAULT_OWNER_ORG_NAME}} — connection to current projects, strategy, or operations>
+<Why this person matters to {{VAULT_OWNER_SHORT_NAME}}/{{VAULT_OWNER_COMPANY}} — connection to current projects, strategy, or operations>
 
 ## Related
 
@@ -118,9 +118,9 @@ updated: <today>
 
 <Structured information — what it does, how it works, key offerings, pricing if relevant>
 
-## Relevance to {{VAULT_OWNER_ORG_NAME}}
+## Relevance to {{VAULT_OWNER_COMPANY}}
 
-<Why this matters to {{VAULT_OWNER_SHORT_NAME}}/{{VAULT_OWNER_ORG_NAME}} — connection to current projects, strategy, or operations>
+<Why this matters to {{VAULT_OWNER_SHORT_NAME}}/{{VAULT_OWNER_COMPANY}} — connection to current projects, strategy, or operations>
 
 ## Related
 
@@ -158,9 +158,9 @@ updated: <today>
 
 <Structured information — what it does, how it works, key features, pricing if relevant>
 
-## Relevance to {{VAULT_OWNER_ORG_NAME}}
+## Relevance to {{VAULT_OWNER_COMPANY}}
 
-<Why this matters to {{VAULT_OWNER_SHORT_NAME}}/{{VAULT_OWNER_ORG_NAME}} — connection to current projects, strategy, or operations>
+<Why this matters to {{VAULT_OWNER_SHORT_NAME}}/{{VAULT_OWNER_COMPANY}} — connection to current projects, strategy, or operations>
 
 ## Related
 
@@ -198,9 +198,9 @@ updated: <today>
 
 <Core mechanics, principles, or framework>
 
-## Application to {{VAULT_OWNER_ORG_NAME}}
+## Application to {{VAULT_OWNER_COMPANY}}
 
-<How this concept applies to {{VAULT_OWNER_SHORT_NAME}}'s work, {{VAULT_OWNER_ORG_NAME}}'s strategy, or agent operations>
+<How this concept applies to {{VAULT_OWNER_SHORT_NAME}}'s work, {{VAULT_OWNER_COMPANY}}'s strategy, or agent operations>
 
 ## Related
 
@@ -243,7 +243,7 @@ updated: <today>
 
 ## Recommendation
 
-<Which option fits {{VAULT_OWNER_ORG_NAME}}'s needs and why>
+<Which option fits {{VAULT_OWNER_COMPANY}}'s needs and why>
 
 ## Related
 
