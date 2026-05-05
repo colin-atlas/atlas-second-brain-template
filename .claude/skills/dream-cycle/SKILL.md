@@ -11,7 +11,7 @@ The brain's nightly maintenance pass. Runs unattended (cron / Claude Code routin
 ## Trigger
 
 - Manual: `/dream-cycle` or "run the dream cycle"
-- Auto: scheduled nightly (see `SETUP.md` for launchd/cron scheduling instructions; the launchd plist label uses `{{LAUNCHD_LABEL_PREFIX}}.dream-cycle`)
+- Auto: scheduled nightly via local launchd at 03:00 (`{{LAUNCHD_LABEL_PREFIX}}.dream-cycle.plist`). See `areas/operations/automations.md` for setup.
 
 ## Workflow
 
