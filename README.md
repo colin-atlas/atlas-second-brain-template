@@ -6,39 +6,54 @@ Learn more about Atlas: https://atlasassistants.com
 
 ## What's Inside
 
-- `CLAUDE.md` — operating manual Claude Code reads on every session. Fill in the executive's details.
-- `context/` — placeholder pages for the exec and their company: `user.md`, `company.md`, `icp.md`, `brand.md`, `team.md`. Fill these in during intake.
-- `knowledge/_index.md` — scaffold for the knowledge graph. Populated by the `ingest` skill.
-- `projects/project-index.md` — scaffold for active and archived projects.
-- `areas/` — example areas of responsibility: `content/`, `finances/`, `product/`, `strategic-planning/`. Add or rename to match the exec's world.
-- `reports/` — `daily/`, `weekly/`, `monthly/` subfolders for periodic reports (SOD/EOD, weekly, monthly).
-- `meetings/`, `inbox/` — scaffolded directories ready for use.
-- `.claude/skills/ingest/` — skill that turns raw captures into synthesized knowledge pages.
-- `.claude/skills/lint/` — skill that audits and auto-fixes vault health.
+- `CLAUDE.md` — operating manual Claude Code reads on every session. Fill in the executive's details (search for `{{` placeholders).
+- `RESOLVER.md` — deterministic routing table the ingest skills consult before creating any new page.
+- `SETUP.md` — EA-facing setup runbook (intake → clone → fill placeholders → `/onboard` → schedule dream-cycle).
+- `context/` — placeholder pages: `user.md`, `company.md`, `icp.md`, `brand.md`, `team.md`. Fill these in during intake.
+- `knowledge/` — synthesized knowledge graph, split by entity type:
+  - `people/`, `companies/`, `tools/`, `concepts/`, `comparisons/`
+  - `_index.md` — catalog populated by ingest skills
+- `projects/` — active and archived projects. `project-index.md` is the catalog.
+- `areas/` — example areas of responsibility:
+  - `content/`, `finances/`, `operations/`, `product/`, `strategic-planning/`
+  - `operations/automations.md` — registry of every scheduled / event-triggered automation
+- `meetings/`, `inbox/`, `sessions/` — load-bearing capture directories.
+- `reports/` — `daily/`, `weekly/`, `monthly/`, `dream-cycle/`, `onboard/`.
+- `.claude/skills/` — 7 skills shipped in this template (see below).
+- `scripts/` — maintenance scripts (Atlas-internal: `port-skills-from-colin-brain.sh`; reference: `migrate-meeting-frontmatter.py`).
 
 ## Getting Started
 
-1. Clone this repo into the location of your choice (default: `~/brain/`):
+1. **Clone** into your preferred location (default: `~/brain/`):
 
    ```bash
    git clone https://github.com/colin-atlas/atlas-second-brain-template.git ~/brain
    cd ~/brain
    ```
 
-2. Open the folder as a vault in [Obsidian](https://obsidian.md).
+2. **Open** the folder as a vault in [Obsidian](https://obsidian.md).
 
-3. Fill in the placeholders in `CLAUDE.md` and `context/user.md`. Search for `{{` to find them.
+3. **Fill placeholders** — search for `{{` to find them across:
+   - `CLAUDE.md`
+   - `context/user.md`, `context/company.md`, `context/team.md`
+   - Skill Configuration blocks (`grep -lR '{{VAULT_OWNER' .claude/skills/`)
 
-4. Install [Claude Code](https://docs.anthropic.com/claude/claude-code) and launch from the vault root:
+   See `SETUP.md` for the full placeholder list.
+
+4. **Install** [Claude Code](https://docs.anthropic.com/claude/claude-code) and launch from the vault root:
 
    ```bash
    cd ~/brain
    claude
    ```
 
-5. (Optional) Enable [Obsidian Sync](https://obsidian.md/sync) for real-time multi-device access.
+5. **Run `/onboard`** — guides you through importing your meeting history (Fathom / Granola / Otter / Fireflies / manual), pre-populating your people graph, and bulk-ingesting your historical meetings.
 
-6. (Recommended) Install the [Obsidian Git](https://github.com/Vinzent03/obsidian-git) plugin and configure auto-commit + push every 5 minutes to a private Git repo you own. This enables Claude Code scheduled/cloud automations and acts as version history.
+6. **Schedule the dream-cycle** — see `SETUP.md` for launchd (macOS) / cron (Linux) / Task Scheduler (Windows) instructions.
+
+7. (Optional) Enable [Obsidian Sync](https://obsidian.md/sync) for real-time multi-device access.
+
+8. (Recommended) Install the [Obsidian Git](https://github.com/Vinzent03/obsidian-git) plugin and configure auto-commit + push every 5 minutes to a private Git repo you own. This enables Claude Code scheduled / cloud automations and acts as version history.
 
 ## Full Workspace Setup
 
@@ -46,12 +61,18 @@ This template is one piece of the Atlas AI Workspace Setup, which also covers ID
 
 ## Skills Included
 
-### `ingest`
-Processes raw captures (inbox items, meeting notes, articles) into synthesized knowledge pages. Creates or updates entity, concept, and comparison pages with full frontmatter, cross-references, and wikilinks.
+- **`/onboard`** — One-time cold-start: validates context, imports historical meetings, pre-creates people pages, runs bulk ingest. Run once after clone + placeholder fill.
+- **`/meeting-ingest <path>`** — Process a meeting note into people timelines, entity timelines, and project action candidates.
+- **`/report-ingest <path>`** — Process a daily/weekly/monthly report into project + area updates.
+- **`/knowledge-ingest <path>`** — Process raw captures (inbox items, articles) into synthesized knowledge pages (people, companies, tools, concepts, comparisons).
+- **`/dream-cycle`** — Nightly maintenance pass (auto-ingest, lint --fix, freshness audit, session synthesis). Schedule via launchd / cron — see SETUP.md.
+- **`/triage`** — Periodic cleanup of auto-flagged action candidates (7-class / 3-lane workflow). Run weekly to monthly.
+- **`/lint`** — Audit and auto-fix vault health (frontmatter, wikilinks, indexes, typed-link reciprocity, freshness).
 
-Invoke: `/ingest <path>` or "ingest this".
+## Architecture References
 
-### `lint`
-Audits and auto-fixes vault health — missing frontmatter, orphan pages, broken wikilinks, stale content, and index sync issues. Runs across the entire vault.
+This template implements the second-brain reference architecture documented in:
 
-Invoke: `/lint` or "lint the vault".
+- `colin-brain/projects/optimize-second-brain/docs/reference-architecture.md` (canonical)
+
+Eight portable patterns: three-layer brain (captures + synthesized + health signals), RESOLVER routing, typed wikilinks + reciprocity, ingest-skill contracts (4 guarantees), dream cycle (nightly maintenance), triage cycle (7-class / 3-lane action-candidate cleanup), pre-creation strategy (cold start), migration pattern (legacy data adoption).
