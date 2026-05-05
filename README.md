@@ -71,8 +71,6 @@ This template is one piece of the Atlas AI Workspace Setup, which also covers ID
 
 ## Architecture References
 
-This template implements the second-brain reference architecture documented in:
-
-- `colin-brain/projects/optimize-second-brain/docs/reference-architecture.md` (canonical)
+This template implements the second-brain reference architecture: see [`docs/architecture.md`](docs/architecture.md).
 
 Eight portable patterns: three-layer brain (captures + synthesized + health signals), RESOLVER routing, typed wikilinks + reciprocity, ingest-skill contracts (4 guarantees), dream cycle (nightly maintenance), triage cycle (7-class / 3-lane action-candidate cleanup), pre-creation strategy (cold start), migration pattern (legacy data adoption).
