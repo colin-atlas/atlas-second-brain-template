@@ -6,19 +6,28 @@ tags:
 created: {{DATE}}
 updated: {{DATE}}
 ---
+
 # Knowledge Index
 
-> Catalog of all synthesized knowledge pages. Claude Code reads this first for knowledge queries.
-> Updated automatically by the `ingest` skill on every ingest and by the `lint` skill on audit.
+> Catalog of all synthesized knowledge pages. Read this first when answering knowledge questions.
+> Updated automatically by the ingest skills.
+
+## People
+
+_Empty — populated by `/onboard` and `/meeting-ingest`._
+
+## Companies
+
+_Empty — populated by `/knowledge-ingest` and ingest skills._
+
+## Tools
+
+_Empty — populated by `/knowledge-ingest` and ingest skills._
 
 ## Concepts
 
-_Empty — populated as content is ingested._
-
-## Entities
-
-_Empty — populated as content is ingested._
+_Empty — populated by `/knowledge-ingest`._
 
 ## Comparisons
 
-_Empty — populated as content is ingested._
+_Empty — populated by `/knowledge-ingest` when 3+ entities accumulate in the same domain._
