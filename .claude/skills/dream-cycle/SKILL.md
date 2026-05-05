@@ -15,7 +15,7 @@ The brain's nightly maintenance pass. Runs unattended (cron / Claude Code routin
 
 ## Workflow
 
-Five phases, run in order. Each phase writes a section to the daily report.
+Seven phases (0–6), run in order. Each phase writes a section to the daily report.
 
 ### Phase 0: Auto-ingest qualifying captures
 
